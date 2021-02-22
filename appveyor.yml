@@ -8,22 +8,22 @@ init:
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{​​version}​​'
-  version_prefix: '{​​version}​​'
-  package_version: '{​​version}​​'
-  assembly_version: '{​​version}​​'
-  file_version: '{​​version}​​'
-  informational_version: '{​​version}​​'
+  version: '{version}'
+  version_prefix: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 before_build:
 - cmd: nuget restore
 - cmd: dotnet tool install -g dotnet-sonarscanner
-- cmd: dotnet sonarscanner begin /o:"gobu10" /k:"gobu10_ZbW.Testing.WpfSample" /v:%APPVEYOR_BUILD_VERSION%/d:sonar.branch.name=%APPVEYOR_REPO_BRANCH%/d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="441694e2df7c34b4e7dc2b26832937556301d595" /d:sonar.language="cs«/d:sonar.exclusions="**/bin/**/*,**/obj/**/*" /d:sonar.cs.opencover.reportsPaths="CoverageResults\coverage.opencover.xml"
-
+- cmd: dotnet sonarscanner begin /o:"gobu10" /k:"gobu10_ZbW.Testing.WpfSample" /v:%APPVEYOR_BUILD_VERSION% /d:sonar.branch.name=%APPVEYOR_REPO_BRANCH% /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="441694e2df7c34b4e7dc2b26832937556301d595" /d:sonar.language="cs" /d:sonar.exclusions="**/bin/**/*,**/obj/**/*" /d:sonar.cs.opencover.reportsPaths="CoverageResults\coverage.opencover.xml"
 build_script:
 - cmd: dotnet build ZbW.Testing.WpfSample.sln
-- cmd: dotnet test ZbW.Testing.WpfSample.Client.IntegrationTests\ZbW.Testing.WpfSample.Client.IntegrationTests.csproj/p:CoverletOutput="../CoverageResults/" 
-- cmd: dotnet test ZbW.Testing.WpfSample.Client.UnitTests\ZbW.Testing.WpfSample.Client.UnitTests.csproj/p:CollectCoverage=true/p:CoverletOutput="../CoverageResults/" /p:MergeWith="../CoverageResults/coverage.json"
-- cmd: dotnet test ZbW.Testing.WpfSample.Libs.IpInfoInterface.IntegrationTests\ZbW.Testing.WpfSample.Libs.IpInfoInterface.IntegrationTests.csproj/p:CollectCoverage=true /p:CoverletOutput="../CoverageResults/" /p:MergeWith="../CoverageResults/coverage.json" /p:CoverletOutputFormat=opencover
+- cmd: dotnet test ZbW.Testing.WpfSample.Client.IntegrationTests\ZbW.Testing.WpfSample.Client.IntegrationTests.csproj /p:CollectCoverage=true /p:CoverletOutput="../CoverageResults/" 
+- cmd: dotnet test ZbW.Testing.WpfSample.Client.UnitTests\ZbW.Testing.WpfSample.Client.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutput="../CoverageResults/" /p:MergeWith="../CoverageResults/coverage.json"
+- cmd: dotnet test ZbW.Testing.WpfSample.Libs.IpInfoInterface.IntegrationTests\ZbW.Testing.WpfSample.Libs.IpInfoInterface.IntegrationTests.csproj /p:CollectCoverage=true /p:CoverletOutput="../CoverageResults/" /p:MergeWith="../CoverageResults/coverage.json" /p:CoverletOutputFormat=opencover
+
 after_build:
 - cmd: dotnet sonarscanner end /d:sonar.login="441694e2df7c34b4e7dc2b26832937556301d595"
 
